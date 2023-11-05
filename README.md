@@ -4,7 +4,9 @@
 
 文件的命名参考了rm_vision项目
 
-**Author: 邹承甫** 
+**原仓库位于**: https://github.com/baiyeweiguang/CSU-RM-Sentry.git
+
+**作者: 邹承甫** 
 
 **找我交流: 3548054568(QQ)**
 
@@ -20,7 +22,7 @@
 |-|-|
 |<img src="assets/segment.png"/>|<img src="assets/rviz.png"/>|
 
-## 1. Framework框架
+## 1. 框架
 
 - **rm_bringup** (启动相机驱动，串口驱动，自瞄程序和robot_state_publisher，参考rm_vision项目)
 - **rm_interfaces** (自定义msg和srv)
@@ -72,7 +74,39 @@ src
     └── rplidar_ros
 ```
 
-## 2. Dependencies依赖
+## 2. 安装
+
+安装ros-humble-desktop-full，参考 [ROS2官方文档](https://docs.ros.org/en/humble/index.html)
+
+安装Livox-SDK2，参考 [LIVOX-SDK2官方仓库](https://github.com/Livox-SDK/Livox-SDK2)
+
+克隆仓库到本地
+
+```bash
+git clone https://github.com/CSU-FYT-Vision/CSU-RM-Sentry && cd CSU-RM-Sentry
+```
+
+安装依赖
+
+```bash
+sudo apt-get install -y  libpcl-ros-dev
+rosdep install --from-paths src --ignore-src -r -y
+```
+
+编译
+```bash
+colcon build --symlink-install
+```
+
+运行
+```bash
+# 建图
+./mapping.sh
+# 导航
+./nav.sh
+```
+
+## 2. 依赖
 
 - **系统**
   - Ubuntu 22.04
