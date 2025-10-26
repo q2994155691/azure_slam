@@ -1,0 +1,38 @@
+ekf_filter_node:
+  ros__parameters:
+    frequency: 30.0
+    sensor_timeout: 0.1
+    two_d_mode: true
+    
+    # 坐標系配置
+    odom_frame: odom
+    base_link_frame: base_footprint
+    world_frame: odom
+    
+    # 發布 TF
+    publish_tf: true
+    
+    # RF2O 里程計配置
+    odom0: /odom_rf2o
+    odom0_config: [true,  true,  false,    # x, y, z (使用 x, y)
+                   false, false, true,     # roll, pitch, yaw (使用 yaw)
+                   true,  true,  false,    # vx, vy, vz (使用 vx, vy)
+                   false, false, true,     # vroll, vpitch, vyaw (使用 vyaw)
+                   false, false, false]    # ax, ay, az (不使用)
+    odom0_differential: false
+    odom0_relative: false
+    
+    # IMU 配置
+    imu0: /imu/data_raw
+    imu0_config: [false, false, false,     # x, y, z (位置不使用)
+                  false, false, true,      # roll, pitch, yaw (只使用 yaw)
+                  false, false, false,     # vx, vy, vz (不使用)
+                  false, false, true,      # vroll, vpitch, vyaw (使用 vyaw)
+                  true,  true,  false]     # ax, ay, az (使用 ax, ay)
+    imu0_differential: false
+    imu0_relative: true
+    imu0_remove_gravitational_acceleration: true
+    
+    # 處理延遲
+    imu0_queue_size: 10
+    odom0_queue_size: 10

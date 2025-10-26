@@ -13,9 +13,19 @@ add_compile_options(-O3)
 find_package(ament_cmake_auto REQUIRED)
 
 ament_auto_find_build_dependencies()
+# 手動查找 libpointmatcher（因為 ROS2 版本路徑特殊）
+find_package(libpointmatcher REQUIRED)
+
+# 添加包含目錄
+include_directories(
+  /opt/ros/humble/include/libpointmatcher
+)
 ament_auto_add_executable(icp_localization 
   DIRECTORY src)
 
+target_link_libraries(icp_localization
+  ${libpointmatcher_LIBRARIES}
+)
 
 # uncomment the following section in order to fill in
 # further dependencies manually.
