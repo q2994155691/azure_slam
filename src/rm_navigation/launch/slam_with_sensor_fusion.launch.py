@@ -44,19 +44,21 @@ def generate_launch_description():
         
         # 3. 啟動 RF2O 激光里程計
         Node(
-            package='rf2o_laser_odometry',
-            executable='rf2o_laser_odometry_node',
-            name='rf2o_laser_odometry',
-            output='screen',
-            parameters=[{
-                'laser_scan_topic': '/scan',
-                'odom_topic': '/odom_rf2o',
-                'publish_tf': False,  # 不發布 TF,由 robot_localization 發布
-                'base_frame_id': 'base_footprint',
-                'odom_frame_id': 'odom',
-                'freq': 10.0,
-            }]
-        ),
+	    package='rf2o_laser_odometry',
+	    executable='rf2o_laser_odometry_node',
+	    name='rf2o_laser_odometry',
+	    output='screen',
+	    parameters=[{
+		'laser_scan_topic': '/scan',
+		'odom_topic': '/odom_rf2o',
+		'publish_tf': False,
+		'base_frame_id': 'base_footprint',
+		'odom_frame_id': 'odom',
+		'freq': 20.0,  # 從 10 提高到 20 Hz - 更頻繁的里程計更新
+		'verbose': False,
+		'max_keyframes': 50,  # 提高關鍵幀數量
+	    }]
+	),
         
         # 4. 啟動 robot_localization (EKF)
         Node(
