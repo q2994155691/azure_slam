@@ -39,7 +39,7 @@ def generate_launch_description():
         output='screen'
     )
     
-    # 3. RF2O 雷達里程計（不發布 TF，由 robot_localization 發布）
+    # 3. RF2O 雷達里程計
     rf2o_node = Node(
         package='rf2o_laser_odometry',
         executable='rf2o_laser_odometry_node',
@@ -48,7 +48,7 @@ def generate_launch_description():
         parameters=[{
             'laser_scan_topic': '/scan',
             'odom_topic': '/odom_rf2o',
-            'publish_tf': False,  # 關鍵：不發布 TF
+            'publish_tf': False,
             'base_frame_id': 'base_footprint',
             'odom_frame_id': 'odom',
             'init_pose_from_topic': '',
@@ -100,11 +100,15 @@ def generate_launch_description():
     )
     
     # 8. SLAM Toolbox
+    slam_params_file = os.path.join(bringup_dir, 'config', 'mapper_params_localization.yaml')
     slam_toolbox = IncludeLaunchDescription(
         PythonLaunchDescriptionSource(
             os.path.join(slam_toolbox_dir, 'launch', 'online_async_launch.py')
         ),
-        launch_arguments={'use_sim_time': use_sim_time}.items()
+        launch_arguments={
+            'use_sim_time': use_sim_time,
+            'slam_params_file': slam_params_file
+        }.items()
     )
     
     # 9. Map Saver
@@ -119,13 +123,14 @@ def generate_launch_description():
     ld = LaunchDescription()
     ld.add_action(declare_use_sim_time)
     ld.add_action(rplidar_launch)
-    ld.add_action(imu_node)           # 新增：IMU
+    ld.add_action(imu_node)
     ld.add_action(rf2o_node)
-    ld.add_action(ekf_node)            # 新增：EKF 融合
+    ld.add_action(ekf_node)
     ld.add_action(base_footprint_to_link)
     ld.add_action(base_to_laser)
-    ld.add_action(base_to_imu)         # 新增：IMU TF
+    ld.add_action(base_to_imu)
     ld.add_action(slam_toolbox)
     ld.add_action(map_saver)
     
     return ld
+
